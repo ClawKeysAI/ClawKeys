@@ -127,6 +127,55 @@
   }
   .nav-links a:hover { color: var(--accent); }
 
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px; background: none; border: none;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text); border-radius: 2px; transition: all 0.3s;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8,11,16,0.98);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 40px; z-index: 200;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { font-size: 22px; }
+    .nav-close {
+      position: absolute; top: 20px; right: 24px;
+      font-size: 32px; color: var(--muted);
+      cursor: pointer; background: none; border: none; color: var(--text);
+    }
+    .hero { padding: 100px 20px 60px; }
+    .hero h1 { letter-spacing: -1px; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .shortcuts-layout { grid-template-columns: 1fr; gap: 40px; }
+    .key-showcase { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .step { border-right: none; border-bottom: 1px solid var(--border); }
+    .step:last-child { border-bottom: none; }
+    .integration-card { padding: 32px 20px; }
+    .section-wrap { padding: 60px 20px; }
+    footer { flex-direction: column; align-items: center; text-align: center; padding: 32px 20px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    .terminal { margin: 40px 0 0; }
+    .cta-section { padding: 80px 20px; }
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+  }
+
   .nav-cta {
     background: var(--accent);
     color: var(--bg) !important;
@@ -604,10 +653,14 @@
     <div class="logo-icon">⌨️</div>
     ClawKeys
   </a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#shortcuts">Shortcuts</a></li>
-    <li><a href="#how">How It Works</a></li>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <button class="nav-close" id="navClose">✕</button>
+    <li><a href="#features" onclick="closeNav()">Features</a></li>
+    <li><a href="#shortcuts" onclick="closeNav()">Shortcuts</a></li>
+    <li><a href="#how" onclick="closeNav()">How It Works</a></li>
     <li><a href="https://moltbook.com/" target="_blank">Moltbook</a></li>
     <li><a href="https://x.com/ClawKeysAI" target="_blank">𝕏 Twitter</a></li>
     <li><a href="https://moltbook.com/" target="_blank" class="nav-cta">Get Started →</a></li>
@@ -861,6 +914,20 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  const navClose = document.getElementById('navClose');
+
+  hamburger.addEventListener('click', () => navLinks.classList.add('open'));
+  navClose.addEventListener('click', () => navLinks.classList.remove('open'));
+  function closeNav() { navLinks.classList.remove('open'); }
+
+  // Close on outside click
+  navLinks.addEventListener('click', (e) => {
+    if (e.target === navLinks) navLinks.classList.remove('open');
+  });
+
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
